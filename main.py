@@ -1,7 +1,7 @@
 from functions import *
 
 # Initialize variables 
-sourcePath = "/Users/valeriepineaunoel/Desktop/20220321-2017ACCSampleImaging/20220321-SpinalCord-AzideTest/20220321-SpinalCord7"
+sourcePath = "/Users/valeriepineaunoel/Desktop/20220321-2017ACCSampleImaging/20220321-SpinalCord-AzideTest/20220321-SpinalCord8"
 firstLine = 1
 
 destinationLinePath = createNewDirectory(directory=sourcePath, newFileName="LineCorrection")
@@ -21,7 +21,6 @@ aveImage = createAverageImage(directory=destinationLinePath, filesName=files)
 pathAve = correctorsPath + "/" + "Average"
 tiff.imsave(pathAve, aveImage)
 correctionImage = createIntensityCorrectionImage(image=aveImage)
-print(correctionImage)
 correctionName = correctorsPath + "/" + "IntensityCorrection"
 tiff.imsave(correctionName, correctionImage)
 
