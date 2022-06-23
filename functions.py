@@ -43,6 +43,7 @@ def read_file(file_path):
 	image_array = tiff.imread(file_path)
 	return image_array
 
+
 def fix_polygon(image, firstLinePosition):
 	"""
 	Replaces the black horizontal lines by the average of the value of the pixel
@@ -59,6 +60,18 @@ def fix_polygon(image, firstLinePosition):
 
 	for i in range(firstLinePosition, 511, 36):
 		image[i] = image[i+1]/2 + image[i-1]/2
+
+	return image
+
+def deleteRowInImage(image, rowsToDelete):
+	"""
+
+	"""
+	x = 0
+	while x < rowsToDelete:
+		image = np.delete(image, x, 0)
+		x += 1
+	print("DEL IMAGE : {}{}".format(image, image.shape[0]))
 
 	return image
 
@@ -162,6 +175,20 @@ def createAverageImage(directory: str, filesName):
 
 	return pixels
 
+def averageRowsOfTwoImages(image1, image2, row1, row2): 
+	"""
+	This function takes two .tif images and average each element according to their row number. 
+	If row1 and row2 = 0, the first row of each image are averaged together, element by element. 
+	The average finishes when the row of image 1 does not exist anymore. 
+	"""
+	while row1 < image1.shape[0]:
+		rowsToAverage = np.vstack((image1[row1], image2[row2]))
+		image1[row1] = np.mean(rowsToAverage)
+		row1 += 1
+		row2 += 1
+
+	return image1
+
 def createIntensityCorrectionImage(image):
 	"""
 	From an average image of all images in a set, generates the intensity correction image that should be applied on individual images. 
@@ -204,6 +231,26 @@ def adjustIntensity(image, correction):
 		x += 1
 
 	return new8bitImage
+
+
+def stitchTwoImagesHorizontal(image1, image2, overlap):
+	numberOfOverlapedRows = int(512 * overlap / 100)
+	rowImage1 = 512 - numberOfOverlapedRows
+	rowImage2 = 0
+
+	averageImage = averageRowsOfTwoImages(image1, image2, row1=rowImage1, row2=rowImage2)
+
+	del_image2 = deleteRowInImage(image=image2, rowsToDelete=numberOfOverlapedRows)
+	stitchImage = np.concatenate((image1, del_image2), axis=0) 
+
+	return stitchImage
+
+def stitchTwoImagesVertical(image1, image2, overlap):
+	numberOfOverlapedRows = int(1064 * overlap / 100)
+	columnImage1 = 1064 - numberOfOverlapedRows
+	columnImage2 = 0
+
+	
 
 
 
