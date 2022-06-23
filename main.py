@@ -1,9 +1,9 @@
 from functions import *
 
-sourcePath = "/Users/valeriepineaunoel/Desktop/testImages"
+sourcePath = "/Users/valeriepineaunoel/Desktop/20220621-6umPolystyreneBeads-overlap10%-zoom2/LineCorrection"
 firstLine = 35
 overlap = 10
-tileDimensions = [2, 3]
+tileDimensions = [6, 4]
 
 #Step 1 : Average horizontal lines from pylogon
 #destinationLinePath = createNewDirectory(directory=sourcePath, newFileName="LineCorrection")
@@ -39,14 +39,14 @@ tileDimensions = [2, 3]
 #Step 3 : Stitching in x and y from line-corrected images
 #destinationStitchingPath = createNewDirectory(directory=sourcePath, newFileName="StitchXY")
 
-files = listNameOfFiles(directory="/Users/valeriepineaunoel/Desktop/testImages")
+files = listNameOfFiles(directory=sourcePath)
 
 i = 0
 x = 0
 
 while x < tileDimensions[0]:
-	topFilePath = "/Users/valeriepineaunoel/Desktop/testImages" + "/" + files[i]
-	secondTopFilePath = "/Users/valeriepineaunoel/Desktop/testImages" + "/" + files[i+1]
+	topFilePath = sourcePath + "/" + files[i]
+	secondTopFilePath = sourcePath + "/" + files[i+1]
 	i += 2
 
 	topImage = read_file(file_path=topFilePath)
@@ -55,13 +55,15 @@ while x < tileDimensions[0]:
 	
 	y = 2 
 	while y < tileDimensions[1]:
-		path = "/Users/valeriepineaunoel/Desktop/testImages" + "/" + files[i]
+		path = sourcePath + "/" + files[i]
 		image = read_file(file_path=path)
 		stitchedImage = stitchTwoImagesHorizontal(image1=stitchedImage, image2=image, overlap=overlap)
 		y += 1
 		i += 1
 	tiff.imwrite("/Users/valeriepineaunoel/Desktop/" + str(i) + ".tif", stitchedImage)
 	x += 1
+
+# RESTE À FAIRE LE STITCHING VERTICAL LES AMIS
 
 
 #filePath1 = sourcePath + "/" + files[0]

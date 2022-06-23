@@ -67,6 +67,8 @@ def fix_polygon(image, firstLinePosition):
 
 def deleteRowInImage(image, rowsToDelete):
 	"""
+	Delete rows in a numpy array according to the number of rows set with rowsToBeDeleted. 
+	Returns the new numpy array without the rows. 
 
 	"""
 	x = 0
@@ -235,6 +237,11 @@ def adjustIntensity(image, correction):
 
 
 def stitchTwoImagesHorizontal(image1, image2, overlap):
+	"""
+	Averages the rows corresponding to the overlap of the two images and concatenate the rest of the images. 
+	Stitching image 1 with the image 2 under it. ç
+	Returns the stitched image. 
+	"""
 	overlapedRows = int(512 * overlap / 100)
 	rowImage1 = image1.shape[0] - overlapedRows
 	rowImage2 = 0
