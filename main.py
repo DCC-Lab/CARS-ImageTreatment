@@ -40,27 +40,28 @@ tileDimensions = [2, 3]
 #destinationStitchingPath = createNewDirectory(directory=sourcePath, newFileName="StitchXY")
 
 files = listNameOfFiles(directory="/Users/valeriepineaunoel/Desktop/testImages")
-stitchedRows = np.zeros((0,0), dtype=int)
 
 i = 0
 x = 0
-topFilePath = "/Users/valeriepineaunoel/Desktop/testImages" + "/" + files[i]
-secondTopFilePath = "/Users/valeriepineaunoel/Desktop/testImages" + "/" + files[i+1]
 
-i += 2
-topImage = read_file(file_path=topFilePath)
-secondTopImage = read_file(file_path=secondTopFilePath)
-stitchedImage = stitchTwoImagesHorizontal(image1=topImage, image2=secondTopImage, overlap=overlap)
-tiff.imwrite("/Users/valeriepineaunoel/Desktop/stitched1.tif", stitchedImage)
-y = 2 
-while y < tileDimensions[1]:
-	path = "/Users/valeriepineaunoel/Desktop/testImages" + "/" + files[i]
-	image = read_file(file_path=path)
-	stitchedImage = stitchTwoImagesHorizontal(image1=stitchedImage, image2=image, overlap=overlap)
-	tiff.imwrite("/Users/valeriepineaunoel/Desktop/stitched2.tif", stitchedImage)
-	y += 1
-y = 0
-x += 1
+while x < tileDimensions[0]:
+	topFilePath = "/Users/valeriepineaunoel/Desktop/testImages" + "/" + files[i]
+	secondTopFilePath = "/Users/valeriepineaunoel/Desktop/testImages" + "/" + files[i+1]
+	i += 2
+
+	topImage = read_file(file_path=topFilePath)
+	secondTopImage = read_file(file_path=secondTopFilePath)
+	stitchedImage = stitchTwoImagesHorizontal(image1=topImage, image2=secondTopImage, overlap=overlap)
+	
+	y = 2 
+	while y < tileDimensions[1]:
+		path = "/Users/valeriepineaunoel/Desktop/testImages" + "/" + files[i]
+		image = read_file(file_path=path)
+		stitchedImage = stitchTwoImagesHorizontal(image1=stitchedImage, image2=image, overlap=overlap)
+		y += 1
+		i += 1
+	tiff.imwrite("/Users/valeriepineaunoel/Desktop/" + str(i) + ".tif", stitchedImage)
+	x += 1
 
 
 #filePath1 = sourcePath + "/" + files[0]

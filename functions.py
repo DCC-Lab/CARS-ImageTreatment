@@ -33,7 +33,7 @@ def listNameOfFiles(directory: str, extension="tif") -> list:
 				pass
 			else:
 				foundFiles.append(file)
-				
+
 	foundFiles.sort()
 	return foundFiles
 
@@ -235,7 +235,6 @@ def adjustIntensity(image, correction):
 
 
 def stitchTwoImagesHorizontal(image1, image2, overlap):
-	print("ALLO {}".format(image1.shape[0]))
 	overlapedRows = int(512 * overlap / 100)
 	rowImage1 = image1.shape[0] - overlapedRows
 	rowImage2 = 0
