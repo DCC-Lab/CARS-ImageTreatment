@@ -3,7 +3,7 @@ from functions import *
 sourcePath = "/Users/valeriepineaunoel/Desktop/testImages"
 firstLine = 35
 overlap = 10
-tileDimension = [4, 6]
+tileDimensions = [2, 3]
 
 #Step 1 : Average horizontal lines from pylogon
 #destinationLinePath = createNewDirectory(directory=sourcePath, newFileName="LineCorrection")
@@ -39,22 +39,33 @@ tileDimension = [4, 6]
 #Step 3 : Stitching in x and y from line-corrected images
 #destinationStitchingPath = createNewDirectory(directory=sourcePath, newFileName="StitchXY")
 
-#files = listNameOfFiles(directory=destinationLinePath)
-#pathFirstImage = destinationLinePath + "/" + files[0]
-#firstImage = read_file(file_path=pathFirstImage)
-#
-#i = 1
-#while i < len(files):
-#	for x in tileDimension[0]:
-#		for y in tileDimension[1]:
-#			filePath = sourcePath + "/" + files[i]
-#			image = read_file(file_path=filePath)
-#			firstImage = stitchTwoImagesHorizontal(image1=firstImage, image2=image, overlap=overlap)
-#			i += 1
+files = listNameOfFiles(directory="/Users/valeriepineaunoel/Desktop/testImages")
+stitchedRows = np.zeros((0,0), dtype=int)
 
-filePath1 = sourcePath + "/" + files[0]
-filePath2 = sourcePath + "/" + files[1]
-image1 = read_file(file_path=filePath1)
-image2 = read_file(file_path=filePath2)
-stitchTwoImagesHorizontal(image1, image2, overlap)
+i = 0
+x = 0
+topFilePath = "/Users/valeriepineaunoel/Desktop/testImages" + "/" + files[i]
+secondTopFilePath = "/Users/valeriepineaunoel/Desktop/testImages" + "/" + files[i+1]
+
+i += 2
+topImage = read_file(file_path=topFilePath)
+secondTopImage = read_file(file_path=secondTopFilePath)
+stitchedImage = stitchTwoImagesHorizontal(image1=topImage, image2=secondTopImage, overlap=overlap)
+tiff.imwrite("/Users/valeriepineaunoel/Desktop/stitched1.tif", stitchedImage)
+y = 2 
+while y < tileDimensions[1]:
+	path = "/Users/valeriepineaunoel/Desktop/testImages" + "/" + files[i]
+	image = read_file(file_path=path)
+	stitchedImage = stitchTwoImagesHorizontal(image1=stitchedImage, image2=image, overlap=overlap)
+	tiff.imwrite("/Users/valeriepineaunoel/Desktop/stitched2.tif", stitchedImage)
+	y += 1
+y = 0
+x += 1
+
+
+#filePath1 = sourcePath + "/" + files[0]
+#filePath2 = sourcePath + "/" + files[1]
+#image1 = read_file(file_path=filePath1)
+#image2 = read_file(file_path=filePath2)
+#stitchTwoImagesHorizontal(image1, image2, overlap)
 

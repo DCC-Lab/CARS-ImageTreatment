@@ -7,7 +7,7 @@ import scipy.ndimage as simg
 import skimage as ski
 
 # TODOs :
-# this code consideres that the nput images are 8-bits, but it would be more convenient to have a function that checks that. 
+# this code consideres that the input images are 8-bits, but it would be more convenient to have a function that checks that. 
 
 
 def createNewDirectory(directory: str, newFileName: str):
@@ -33,6 +33,8 @@ def listNameOfFiles(directory: str, extension="tif") -> list:
 				pass
 			else:
 				foundFiles.append(file)
+				
+	foundFiles.sort()
 	return foundFiles
 
 def read_file(file_path):
@@ -71,7 +73,6 @@ def deleteRowInImage(image, rowsToDelete):
 	while x < rowsToDelete:
 		image = np.delete(image, x, 0)
 		x += 1
-	print("DEL IMAGE : {}{}".format(image, image.shape[0]))
 
 	return image
 
@@ -234,23 +235,23 @@ def adjustIntensity(image, correction):
 
 
 def stitchTwoImagesHorizontal(image1, image2, overlap):
-	numberOfOverlapedRows = int(512 * overlap / 100)
-	rowImage1 = 512 - numberOfOverlapedRows
+	print("ALLO {}".format(image1.shape[0]))
+	overlapedRows = int(512 * overlap / 100)
+	rowImage1 = image1.shape[0] - overlapedRows
 	rowImage2 = 0
 
 	averageImage = averageRowsOfTwoImages(image1, image2, row1=rowImage1, row2=rowImage2)
 
-	del_image2 = deleteRowInImage(image=image2, rowsToDelete=numberOfOverlapedRows)
+	del_image2 = deleteRowInImage(image=image2, rowsToDelete=overlapedRows)
 	stitchImage = np.concatenate((image1, del_image2), axis=0) 
 
 	return stitchImage
 
-def stitchTwoImagesVertical(image1, image2, overlap):
-	numberOfOverlapedRows = int(1064 * overlap / 100)
-	columnImage1 = 1064 - numberOfOverlapedRows
-	columnImage2 = 0
 
-	
+
+
+
+
 
 
 
