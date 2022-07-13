@@ -178,6 +178,18 @@ def createAverageImage(directory: str, filesName):
 
 	return pixels
 
+def averageTwoListsElementWise(list1, list2):
+	"""
+	Input two lists and each element are going to be averaged together. 
+	If list1 = (1,2,3) and list2 = (3,4,5), then this function returns [2.0, 3.0, 4.0].
+	"""
+	newList = list(zip(list1, list2))
+	meanList = []
+	for i in newList:
+		meanList.append(sum(i) / len(i))
+	print(meanList)
+	return meanList
+
 def averageRowsOfTwoImages(image1, image2, row1, row2): 
 	"""
 	This function takes two .tif images and average each element according to their row number. 
@@ -185,9 +197,7 @@ def averageRowsOfTwoImages(image1, image2, row1, row2):
 	The average finishes when the row of image 1 does not exist anymore. 
 	"""
 	while row1 < image1.shape[0]:
-		rowsToAverage = np.vstack((image1[row1], image2[row2]))
-		image1[row1] = np.mean(rowsToAverage)
-		print("MEAN TWO ROWS : {}".format(image1[row1]))
+		image1[row1] = averageTwoListsElementWise(list1=image1[row1], list2=image2[row2])
 		row1 += 1
 		row2 += 1
 
