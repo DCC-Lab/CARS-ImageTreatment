@@ -73,7 +73,7 @@ def deleteRowInImage(image, rowsToDelete):
 	"""
 	x = 0
 	while x < rowsToDelete:
-		image = np.delete(image, x, 0)
+		image = np.delete(image, 0, 0)
 		x += 1
 
 	return image
@@ -187,7 +187,6 @@ def averageTwoListsElementWise(list1, list2):
 	meanList = []
 	for i in newList:
 		meanList.append(sum(i) / len(i))
-	print(meanList)
 	return meanList
 
 def averageRowsOfTwoImages(image1, image2, row1, row2): 
@@ -254,9 +253,7 @@ def stitchTwoImagesVertical(image1, image2, overlap):
 	Returns the vertically stitched images. 
 	"""
 	overlapedRows = int(512 * overlap / 100)
-	print("OVERLAPED ROWS : {}{}".format(overlapedRows, type(overlapedRows)))
 	rowImage1 = image1.shape[0] - overlapedRows - 1
-	print("ROWIMAGE1 : {}{}".format(rowImage1, type(rowImage1)))
 	rowImage2 = 0
 
 	averageImage = averageRowsOfTwoImages(image1, image2, row1=rowImage1, row2=rowImage2)
