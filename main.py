@@ -3,9 +3,9 @@ from functions import *
 sourcePath = "/Users/valeriepineaunoel/Desktop/20220621-6umPolystyreneBeads-overlap10%-zoom2/LineCorrection"
 firstLine = 35
 overlap = 10
-tileDimensions = [6, 4]
+tileDimensions = [6, 4] #number of images 
 
-#Step 1 : Average horizontal lines from pylogon
+#Step 1 : Average horizontal lines generated from scratches on pylogon mirror 
 #destinationLinePath = createNewDirectory(directory=sourcePath, newFileName="LineCorrection")
 #
 #files = listNameOfFiles(directory=sourcePath)
@@ -42,26 +42,32 @@ tileDimensions = [6, 4]
 files = listNameOfFiles(directory=sourcePath)
 
 i = 0
-x = 0
+y = 0
 
-while x < tileDimensions[0]:
-	topFilePath = sourcePath + "/" + files[i]
-	secondTopFilePath = sourcePath + "/" + files[i+1]
-	i += 2
+#while y < tileDimensions[1]:
+print(i)
+topFilePath = sourcePath + "/" + files[i]
+topImage = read_file(file_path=topFilePath)
+tiff.imwrite("/Users/valeriepineaunoel/Desktop/" + str(i) + ".tif", topImage)
+i += tileDimensions[0]
 
-	topImage = read_file(file_path=topFilePath)
-	secondTopImage = read_file(file_path=secondTopFilePath)
-	stitchedImage = stitchTwoImagesHorizontal(image1=topImage, image2=secondTopImage, overlap=overlap)
+secondTopFilePath = sourcePath + "/" + files[i]
+secondTopImage = read_file(file_path=secondTopFilePath)
+tiff.imwrite("/Users/valeriepineaunoel/Desktop/" + str(i) + ".tif", secondTopImage)
+i += tileDimensions[0]
+print(i)
+
+stitchedImage = stitchTwoImagesVertical(image1=topImage, image2=secondTopImage, overlap=overlap)
 	
-	y = 2 
-	while y < tileDimensions[1]:
-		path = sourcePath + "/" + files[i]
-		image = read_file(file_path=path)
-		stitchedImage = stitchTwoImagesHorizontal(image1=stitchedImage, image2=image, overlap=overlap)
-		y += 1
-		i += 1
-	tiff.imwrite("/Users/valeriepineaunoel/Desktop/" + str(i) + ".tif", stitchedImage)
-	x += 1
+y += 2
+	#while y < tileDimensions[1]:
+	#	path = sourcePath + "/" + files[i]
+	#	image = read_file(file_path=path)
+	#	stitchedImage = stitchTwoImagesVertical(image1=stitchedImage, image2=image, overlap=overlap)
+	#	y += 1
+	#	i += 1
+tiff.imwrite("/Users/valeriepineaunoel/Desktop/" + str(i) + ".tif", stitchedImage)
+	
 
 # RESTE À FAIRE LE STITCHING VERTICAL LES AMIS
 

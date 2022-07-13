@@ -187,6 +187,7 @@ def averageRowsOfTwoImages(image1, image2, row1, row2):
 	while row1 < image1.shape[0]:
 		rowsToAverage = np.vstack((image1[row1], image2[row2]))
 		image1[row1] = np.mean(rowsToAverage)
+		print("MEAN TWO ROWS : {}".format(image1[row1]))
 		row1 += 1
 		row2 += 1
 
@@ -236,14 +237,16 @@ def adjustIntensity(image, correction):
 	return new8bitImage
 
 
-def stitchTwoImagesHorizontal(image1, image2, overlap):
+def stitchTwoImagesVertical(image1, image2, overlap):
 	"""
 	Averages the rows corresponding to the overlap of the two images and concatenate the rest of the images. 
-	Stitching image 1 with the image 2 under it. ç
-	Returns the stitched image. 
+	Stitching image 1 with the image 2 under it.
+	Returns the vertically stitched images. 
 	"""
 	overlapedRows = int(512 * overlap / 100)
-	rowImage1 = image1.shape[0] - overlapedRows
+	print("OVERLAPED ROWS : {}{}".format(overlapedRows, type(overlapedRows)))
+	rowImage1 = image1.shape[0] - overlapedRows - 1
+	print("ROWIMAGE1 : {}{}".format(rowImage1, type(rowImage1)))
 	rowImage2 = 0
 
 	averageImage = averageRowsOfTwoImages(image1, image2, row1=rowImage1, row2=rowImage2)
