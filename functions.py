@@ -259,7 +259,7 @@ def stitchTwoImagesVertical(image1, image2, overlap):
 	averageImage = averageRowsOfTwoImages(image1, image2, row1=rowImage1, row2=rowImage2)
 
 	del_image2 = deleteRowInImage(image=image2, rowsToDelete=overlapedRows)
-	stitchImage = np.concatenate((image1, del_image2), axis=0) 
+	stitchImage = np.concatenate((image1, del_image2), axis=0)
 
 	return stitchImage
 

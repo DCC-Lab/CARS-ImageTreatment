@@ -41,40 +41,36 @@ tileDimensions = [6, 4] #number of images
 
 files = listNameOfFiles(directory=sourcePath)
 
-i = 0
-y = 0
+x = 0
+while x < tileDimensions[0]:
+	y = 0
 
-#while y < tileDimensions[1]:
-print(i)
-topFilePath = sourcePath + "/" + files[i]
-topImage = read_file(file_path=topFilePath)
-tiff.imwrite("/Users/valeriepineaunoel/Desktop/" + str(i) + ".tif", topImage)
-i += tileDimensions[0]
+	j = x
+	topFilePath = sourcePath + "/" + files[j]
+	topImage = read_file(file_path=topFilePath)
+	#tiff.imwrite("/Users/valeriepineaunoel/Desktop/" + str(j) + ".tif", topImage)
+	y += 1
 
-secondTopFilePath = sourcePath + "/" + files[i]
-secondTopImage = read_file(file_path=secondTopFilePath)
-tiff.imwrite("/Users/valeriepineaunoel/Desktop/" + str(i) + ".tif", secondTopImage)
-i += tileDimensions[0]
-print(i)
+	j += tileDimensions[0]
+	secondTopFilePath = sourcePath + "/" + files[j]
+	secondTopImage = read_file(file_path=secondTopFilePath)
+	#tiff.imwrite("/Users/valeriepineaunoel/Desktop/" + str(j) + ".tif", secondTopImage)
+	y += 1
 
-stitchedImage = stitchTwoImagesVertical(image1=topImage, image2=secondTopImage, overlap=overlap)
-	
-y += 2
-	#while y < tileDimensions[1]:
-	#	path = sourcePath + "/" + files[i]
-	#	image = read_file(file_path=path)
-	#	stitchedImage = stitchTwoImagesVertical(image1=stitchedImage, image2=image, overlap=overlap)
-	#	y += 1
-	#	i += 1
-tiff.imwrite("/Users/valeriepineaunoel/Desktop/" + str(i) + ".tif", stitchedImage)
-	
+	stitchImage = stitchTwoImagesVertical(image1=topImage, image2=secondTopImage, overlap=overlap)
+	#tiff.imwrite("/Users/valeriepineaunoel/Desktop/" + str(j) + ".tif", stitchImage)
 
-# RESTE À FAIRE LE STITCHING VERTICAL LES AMIS
+	while y < tileDimensions[1]:
+		j += tileDimensions[0]
+		path = sourcePath + "/" + files[j]
+		image = read_file(file_path=path)
+		stitchImage = stitchTwoImagesVertical(image1=stitchImage, image2=image, overlap=overlap)
+		y += 1
+	tiff.imwrite("/Users/valeriepineaunoel/Desktop/" + str(j) + ".tif", stitchImage)
+	x += 1
 
 
-#filePath1 = sourcePath + "/" + files[0]
-#filePath2 = sourcePath + "/" + files[1]
-#image1 = read_file(file_path=filePath1)
-#image2 = read_file(file_path=filePath2)
-#stitchTwoImagesHorizontal(image1, image2, overlap)
+
+
+
 
