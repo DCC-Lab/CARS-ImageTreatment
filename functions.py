@@ -7,7 +7,7 @@ import scipy.ndimage as simg
 import skimage as ski
 
 # TODOs :
-# this code consideres that the nput images are 8-bits, but it would be more convenient to have a function that checks that. 
+# this code consideres that the input images are 8-bits, but it would be more convenient to have a function that checks that. 
 
 
 def createNewDirectory(directory: str, newFileName: str):
@@ -33,6 +33,8 @@ def listNameOfFiles(directory: str, extension="tif") -> list:
 				pass
 			else:
 				foundFiles.append(file)
+
+	foundFiles.sort()
 	return foundFiles
 
 def read_file(file_path):
@@ -42,6 +44,7 @@ def read_file(file_path):
 	"""
 	image_array = tiff.imread(file_path)
 	return image_array
+
 
 def fix_polygon(image, firstLinePosition):
 	"""
@@ -59,6 +62,19 @@ def fix_polygon(image, firstLinePosition):
 
 	for i in range(firstLinePosition, 511, 36):
 		image[i] = image[i+1]/2 + image[i-1]/2
+
+	return image
+
+def deleteRowInImage(image, rowsToDelete):
+	"""
+	Delete rows in a numpy array according to the number of rows set with rowsToBeDeleted. 
+	Returns the new numpy array without the rows. 
+
+	"""
+	x = 0
+	while x < rowsToDelete:
+		image = np.delete(image, 0, 0)
+		x += 1
 
 	return image
 
@@ -162,6 +178,30 @@ def createAverageImage(directory: str, filesName):
 
 	return pixels
 
+def averageTwoListsElementWise(list1, list2):
+	"""
+	Input two lists and each element are going to be averaged together. 
+	If list1 = (1,2,3) and list2 = (3,4,5), then this function returns [2.0, 3.0, 4.0].
+	"""
+	newList = list(zip(list1, list2))
+	meanList = []
+	for i in newList:
+		meanList.append(sum(i) / len(i))
+	return meanList
+
+def averageRowsOfTwoImages(image1, image2, row1, row2): 
+	"""
+	This function takes two .tif images and average each element according to their row number. 
+	If row1 and row2 = 0, the first row of each image are averaged together, element by element. 
+	The average finishes when the row of image 1 does not exist anymore. 
+	"""
+	while row1 < image1.shape[0]:
+		image1[row1] = averageTwoListsElementWise(list1=image1[row1], list2=image2[row2])
+		row1 += 1
+		row2 += 1
+
+	return image1
+
 def createIntensityCorrectionImage(image):
 	"""
 	From an average image of all images in a set, generates the intensity correction image that should be applied on individual images. 
@@ -204,6 +244,30 @@ def adjustIntensity(image, correction):
 		x += 1
 
 	return new8bitImage
+
+
+def stitchTwoImagesVertical(image1, image2, overlap):
+	"""
+	Averages the rows corresponding to the overlap of the two images and concatenate the rest of the images. 
+	Stitching image 1 with the image 2 under it.
+	Returns the vertically stitched images. 
+	"""
+	overlapedRows = int(512 * overlap / 100)
+	rowImage1 = image1.shape[0] - overlapedRows - 1
+	rowImage2 = 0
+
+	averageImage = averageRowsOfTwoImages(image1, image2, row1=rowImage1, row2=rowImage2)
+
+	del_image2 = deleteRowInImage(image=image2, rowsToDelete=overlapedRows)
+	stitchImage = np.concatenate((image1, del_image2), axis=0)
+
+	return stitchImage
+
+
+
+
+
+
 
 
 
