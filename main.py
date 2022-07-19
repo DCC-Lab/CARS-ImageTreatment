@@ -37,7 +37,7 @@ tileDimensions = [6, 4] #number of images
 #	tiff.imwrite(newFileName, correctedImage)
 
 #Step 3 : Stitching in x and y from line-corrected images
-#destinationStitchingPath = createNewDirectory(directory=sourcePath, newFileName="StitchXY")
+## Vertical stitching 
 
 files = listNameOfFiles(directory=sourcePath)
 
@@ -69,6 +69,7 @@ while x < tileDimensions[0]:
 	tiff.imwrite("/Users/valeriepineaunoel/Desktop/" + str(j) + ".tif", stitchImage)
 	x += 1
 
+##Horizontal stitching
 
 
 
