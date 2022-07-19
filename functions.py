@@ -266,14 +266,3 @@ def stitchTwoImagesVertical(image1, image2, overlap):
 
 
 
-
-
-
-
-
-
-
-
-
-
-

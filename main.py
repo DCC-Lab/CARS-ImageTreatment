@@ -2,7 +2,7 @@ from functions import *
 
 sourcePath = "/Users/valeriepineaunoel/Desktop/20220621-6umPolystyreneBeads-overlap10%-zoom2/LineCorrection"
 firstLine = 35
-overlap = 10
+overlap = 31
 tileDimensions = [6, 4] #number of images 
 
 #Step 1 : Average horizontal lines generated from scratches on pylogon mirror 
@@ -40,36 +40,38 @@ tileDimensions = [6, 4] #number of images
 ## Vertical stitching 
 
 files = listNameOfFiles(directory=sourcePath)
+stitchingPath = createNewDirectory(directory=sourcePath, newFileName="Vertical Stitching")
 
 x = 0
+verticalStitching = 1
 while x < tileDimensions[0]:
 	y = 0
 
 	j = x
 	topFilePath = sourcePath + "/" + files[j]
 	topImage = read_file(file_path=topFilePath)
-	#tiff.imwrite("/Users/valeriepineaunoel/Desktop/" + str(j) + ".tif", topImage)
 	y += 1
 
 	j += tileDimensions[0]
 	secondTopFilePath = sourcePath + "/" + files[j]
 	secondTopImage = read_file(file_path=secondTopFilePath)
-	#tiff.imwrite("/Users/valeriepineaunoel/Desktop/" + str(j) + ".tif", secondTopImage)
 	y += 1
 
+	# The first image is now going to be the first and the second images stitched together
 	stitchImage = stitchTwoImagesVertical(image1=topImage, image2=secondTopImage, overlap=overlap)
-	#tiff.imwrite("/Users/valeriepineaunoel/Desktop/" + str(j) + ".tif", stitchImage)
 
+	# For each following images, stitches them to the first image (who already has the second and first images stitched)
 	while y < tileDimensions[1]:
 		j += tileDimensions[0]
 		path = sourcePath + "/" + files[j]
 		image = read_file(file_path=path)
 		stitchImage = stitchTwoImagesVertical(image1=stitchImage, image2=image, overlap=overlap)
 		y += 1
-	tiff.imwrite("/Users/valeriepineaunoel/Desktop/" + str(j) + ".tif", stitchImage)
+	tiff.imwrite(stitchingPath + str(verticalStitching) + ".tif", stitchImage)
+	verticalStitching += 1
 	x += 1
 
-##Horizontal stitching
+## Horizontal stitching
 
 
 
